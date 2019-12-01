@@ -1,0 +1,45 @@
+#version 330
+
+uniform mat4 viewMatrix, projMatrix;
+uniform mat3 normalMatrix;
+
+uniform vec3 LightColor;
+uniform vec3 LightPosition;
+uniform float Shininess;
+uniform float Strength;
+uniform vec3 EyeDirection;
+
+in vec4 Position;
+in vec3 Normal;
+in vec3 Color;
+in vec2 UV;
+
+out vec4 outputF;
+
+void main() {
+    vec3 N = normalize(Normal);
+    vec3 pos = (Position).xyz;
+    vec3 L = normalize(LightPosition - pos);
+    //vec3 V = normalize(EyeDirection - pos);
+    vec3 V = normalize(vec3(inverse(viewMatrix) * vec4(0, 0, 0, 1)) + pos);
+    vec3 R = normalize(2.0 * dot(L, N) * N - L);
+    vec3 H = normalize(V + L);
+
+    float material_ambient = 0.2;
+    vec3 ambientColor = LightColor * material_ambient;
+
+    float material_diffuse = 0.9;
+    vec3 diffuse = Color * material_diffuse;
+    float dfFactor = max(dot(L, N), 0.0);
+    vec3 diffuseColor = dfFactor * diffuse;
+
+    float material_specular = 0.95;
+    vec3 specularColor = vec3(0.0, 0.0, 0.0);
+    if (dot(L, N) >= 0.0) {
+        // specularColor = LightColor * pow(max(dot(R, V), 0.0), Shininess);
+        specularColor = LightColor * pow(max(dot(H, N), 0.0), Shininess);
+    }
+
+    vec3 c = ambientColor + diffuseColor + specularColor;
+    outputF = vec4(c, 1);
+}
