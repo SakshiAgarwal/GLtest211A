@@ -1,0 +1,7 @@
+.vs
+Debug/
+glew/
+glut/
+include/
+lib/
+opengl*

@@ -1,5 +1,3 @@
-#include <glew.h>
-#include <GLUT/glut.h>
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,6 +5,8 @@
 #include <math.h>
 #include <string>
 #include "mymath.h"
+#include <glew.h>
+#include <glut.h>
 
 #define PI 3.14159265358979323846
 
@@ -718,17 +718,17 @@ void keyup(unsigned char key, int x, int y) {
     switch (key) {
         //"a": no shading
         case 97:
-            p = initShaders("../vertex.txt", "../frag.txt");
+            p = initShaders("vertex.txt", "frag.txt");
             setupBuffers();
             break;
             //"p": Phong shading
         case 112:
-            p = initShaders("../vertex_phong.txt", "../frag_phong.txt");
+            p = initShaders("vertex_phong.txt", "frag_phong.txt");
             setupBuffers();
             break;
             //"g": Gouraud shading
         case 103:
-            p = initShaders("../vertex_gouraud.txt", "../frag_gouraud.txt");
+            p = initShaders("vertex_gouraud.txt", "frag_gouraud.txt");
             setupBuffers();
             break;
         default:
@@ -747,8 +747,9 @@ int main(int argc, char *argv[]) {
         re_norm[i] = sp_norm[i] / scale;
     }
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_3_2_CORE_PROFILE | GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-    glutInitWindowPosition(100, 100);
+    //glutInitDisplayMode(GLUT_3_2_CORE_PROFILE | GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+	glutInitWindowPosition(100, 100);
     glutInitWindowSize(640, 480);
     glutCreateWindow("ICS Graphics");
     glutSetWindowTitle(s);
@@ -769,15 +770,15 @@ int main(int argc, char *argv[]) {
         printf("OpenGL 3.3 is supported\n");
     } else {
         printf("OpenGL 3.3 not supported\n");
-        exit(1);
+		exit(1);
     }
     glEnable(GL_DEPTH_TEST);
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     init();
-    p = initShaders("../vertex.txt", "../frag.txt");
-    setupBuffers();
+    p = initShaders("vertex.txt", "frag.txt");
+	setupBuffers();
     glutMainLoop();
     return 0;
 }
